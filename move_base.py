@@ -13,7 +13,6 @@ def main():
     locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=True)
     locobot.arm.go_to_home_pose()
 
-    
     # move robot
     locobot.base.move(2, 1, 1)
     
