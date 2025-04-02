@@ -8,8 +8,8 @@ from interbotix_xs_modules.locobot import InterbotixLocobotXS
 # Then change to this directory and type 'python move_base.py'
 
 def main():
-    locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=True)
-    locobot.base.move_to_pose(1, 1, 0, True)
+    locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=False)
+    locobot.base.move(1, 1, 10)
 
 if __name__=='__main__':
     main()
