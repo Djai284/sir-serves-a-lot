@@ -25,8 +25,9 @@ def main():
     locobot.arm.go_to_home_pose()
     locobot.arm.go_to_sleep_pose()
 
-    locobot.base.move_to_pose(1, 1, 3.14, True)
-    locobot.base.move_to_pose(0, 0, 0, True)
+    # 
+    locobot.base.move(1, 1, 1)
+    locobot.base.move(0, 0, 0, True)
 
     locobot.arm.go_to_home_pose()
     locobot.arm.set_ee_cartesian_trajectory(z=-0.2)

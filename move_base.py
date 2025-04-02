@@ -9,7 +9,7 @@ from interbotix_xs_modules.locobot import InterbotixLocobotXS
 
 def main():
     locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=False)
-    locobot.base.move(1, 1, 1)
+    locobot.base.move(2, 1, 1)
 
 if __name__=='__main__':
     main()
