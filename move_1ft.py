@@ -4,7 +4,7 @@ def main():
     locobot = InterbotixLocobotXS(
         robot_model="locobot_wx250s",
         arm_model="mobile_wx250s",
-        use_base=True
+        # use_base=True
     )
     
     distance_in_meters = 0.3048  # 1 foot = 0.3048 meters
