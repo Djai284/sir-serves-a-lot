@@ -20,8 +20,8 @@ def main():
     locobot.base.move(2, 1, 1)
     
     # Moving arm back
-    locobot.arm.go_to_home_pose()
-    locobot.arm.go_to_sleep_pose()
+    # locobot.arm.go_to_home_pose()
+    # locobot.arm.go_to_sleep_pose()
 
 if __name__=='__main__':
     main()
