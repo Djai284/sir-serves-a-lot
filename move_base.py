@@ -1,4 +1,5 @@
 from interbotix_xs_modules.locobot import InterbotixLocobotXS
+import math
 
 # This script commands the base to move to an arbitrary point on a map
 # Note that this script assumes you already have a map built
