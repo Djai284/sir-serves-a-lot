@@ -11,16 +11,13 @@ import math
 
 def main():
     locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=True)
-    locobot.arm.set_ee_pose_components(x=0.3, z=0.2)
-    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
-    locobot.gripper.open()
-    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.arm.go_to_home_pose()
+
     
     # move robot
     locobot.base.move(2, 1, 1)
     
     # Moving arm back
-    locobot.arm.go_to_home_pose()
     locobot.arm.go_to_sleep_pose()
 
 if __name__=='__main__':
