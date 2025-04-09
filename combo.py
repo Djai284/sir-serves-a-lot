@@ -25,7 +25,7 @@ def main():
     locobot.arm.go_to_home_pose()
     locobot.arm.go_to_sleep_pose()
 
-    # 
+    # Move the base
     locobot.base.move(1, 1, 1)
     locobot.base.move(0, 0, 0, True)
 

@@ -1,0 +1,218 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+auto_docking.py
+bartender.py
+combo.py
+move_1ft.py
+move_base.py
+README.md
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="auto_docking.py">
+from interbotix_xs_modules.locobot import InterbotixLocobotXS as Locobot
+
+# This script sends the Locobot to its docking station to charge
+#   For best performance, robot should be under 1m in front of the dock
+#   Note that this script should only be run on robots with smaller or no arms
+#       - locobot_base
+#       - locobot_px100
+
+# Update this value with your model
+MODEL = "wx250s"
+
+# To get started, open a terminal on the robot and type...
+# 'roslaunch interbotix_xslocobot_control xslocobot_python.launch robot_model:=locobot_MODEL use_base:=true use_dock:=true'
+#                                                                                ^ update MODEL
+# Then open a new terminal in this directory and type 'python auto_docking.py'
+
+
+def main(): 
+    if MODEL is not ("px100" or "base"):
+        print("This script should only be run on robots with smaller or no arms")
+        exit()
+
+    locobot = Locobot(robot_model="locobot_"+MODEL)
+    locobot.base.auto_dock()
+
+
+if __name__ == "__main__":
+    main()
+</file>
+
+<file path="move_1ft.py">
+from interbotix_xs_modules.locobot import InterbotixLocobotXS
+
+def main():
+    locobot = InterbotixLocobotXS(
+        robot_model="locobot_wx250s",
+        arm_model="mobile_wx250s",
+        # use_base=True
+    )
+    
+    distance_in_meters = 0.3048  # 1 foot = 0.3048 meters
+    locobot.base.move_forward(distance=distance_in_meters)
+
+if __name__ == '__main__':
+    main()
+</file>
+
+<file path="README.md">
+# Robotics Science and Systems Midterm Project: Sir Serves-a-lot
+
+In this project, we build a robot that is able to detect objects such as plates and cups
+and can use an arm mechanism to pick up and place them to serve food for clients.
+</file>
+
+<file path="bartender.py">
+import math
+from interbotix_xs_modules.locobot import InterbotixLocobotXS
+
+# This script makes the end-effector perform pick, pour, and place tasks
+#
+# To get started, open a terminal and type...
+# 'roslaunch interbotix_xslocobot_control xslocobot_python.launch robot_model:=locobot_wx250s show_lidar:=true'
+# Then change to this directory and type 'python bartender.py'
+
+def main():
+    locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s")
+    locobot.arm.set_ee_pose_components(x=0.3, z=0.2)
+    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.gripper.open()
+    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.gripper.close()
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
+    locobot.arm.set_single_joint_position("waist", -math.pi/4.0)
+    locobot.arm.set_ee_cartesian_trajectory(pitch=1.5)
+    locobot.arm.set_ee_cartesian_trajectory(pitch=-1.5)
+    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.gripper.open()
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
+    locobot.arm.go_to_home_pose()
+    locobot.arm.go_to_sleep_pose()
+
+if __name__=='__main__':
+    main()
+</file>
+
+<file path="combo.py">
+import math
+from interbotix_xs_modules.locobot import InterbotixLocobotXS
+
+# This script manipulates the arm, pan/tilts the camera, and moves the base
+#
+# To get started, open a terminal and type...
+# 'roslaunch interbotix_xslocobot_control xslocobot_python.launch robot_model:=locobot_wx200 use_nav:=true use_lidar:=true rtabmap_args:=-d'
+# Then change to this directory and type 'python combo_control.py'
+
+def main():
+    locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=True)
+    locobot.arm.set_ee_pose_components(x=0.3, z=0.2)
+    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.gripper.open()
+    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.gripper.close()
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
+    locobot.arm.set_single_joint_position("waist", -math.pi/4.0)
+    locobot.arm.set_ee_cartesian_trajectory(pitch=1.5)
+    locobot.arm.set_ee_cartesian_trajectory(pitch=-1.5)
+    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.gripper.open()
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
+    locobot.arm.go_to_home_pose()
+    locobot.arm.go_to_sleep_pose()
+
+    # Move the base
+    locobot.base.move(1, 1, 1)
+    locobot.base.move(0, 0, 0, True)
+
+    locobot.arm.go_to_home_pose()
+    locobot.arm.set_ee_cartesian_trajectory(z=-0.2)
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.2)
+    locobot.arm.set_ee_cartesian_trajectory(z=0.2)
+    locobot.arm.set_ee_cartesian_trajectory(x=0.2)
+    locobot.arm.go_to_sleep_pose()
+
+    locobot.camera.pan(1)
+    locobot.camera.tilt(1)
+    locobot.camera.pan_tilt_move(-1, -1)
+    locobot.camera.pan_tilt_go_home()
+
+if __name__=='__main__':
+    main()
+</file>
+
+<file path="move_base.py">
+from interbotix_xs_modules.locobot import InterbotixLocobotXS
+import math
+
+
+# This script commands the base to move to an arbitrary point on a map
+# Note that this script assumes you already have a map built
+#
+# To get started, open a terminal and type...
+# 'roslaunch interbotix_xslocobot_control xslocobot_python.launch robot_model:=locobot_wx200 use_nav:=true localization:=true'
+# Then change to this directory and type 'python move_base.py'
+
+def main():
+    locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s", use_move_base_action=True)
+    locobot.arm.go_to_home_pose()
+
+    # move robot
+    locobot.base.move(2, 1, 1)
+    
+    # Moving arm back
+    locobot.arm.go_to_sleep_pose()
+
+if __name__=='__main__':
+    main()
+</file>
+
+</files>
