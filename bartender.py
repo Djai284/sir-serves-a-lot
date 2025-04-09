@@ -12,6 +12,7 @@ def main():
     locobot.arm.set_ee_pose_components(x=0.3, z=0.2)
     locobot.arm.set_single_joint_position("waist", math.pi/4.0)
     locobot.gripper.open()
+    locobot.arm.set_single_joint_position("gripper", math.pi/2)
     locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
     locobot.gripper.close()
     locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
