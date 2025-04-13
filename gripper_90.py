@@ -6,9 +6,9 @@ def main():
     T_sd = np.identity(4)
 
     # Set the desired translation (position) of the end-effector.
-    T_sd[0, 3] = 1  # x position
+    T_sd[0, 3] = 0.3  # x position
     T_sd[1, 3] = 0    # y position
-    T_sd[2, 3] = 1  # z position
+    T_sd[2, 3] = 0.2  # z position
 
     # Define a 90 degree rotation (in radians) about the z-axis.
     theta = np.pi / 2  # 90 degrees in radians
