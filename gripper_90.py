@@ -24,7 +24,7 @@ def main():
     T_sd[:3, :3] = Rz
 
     # Create the manipulator instance.
-    bot = InterbotixManipulatorXS("locobot_wx250s", "arm", "gripper")
+    bot = InterbotixManipulatorXS("wx250s", "arm", "gripper")
 
     # Home the arm, set the new pose, then return the arm to home and sleep poses.
     bot.arm.go_to_home_pose()
