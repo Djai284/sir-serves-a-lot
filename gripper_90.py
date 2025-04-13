@@ -24,7 +24,7 @@ def main():
     locobot.arm.set_ee_pose_matrix(T)
 
     # Continue normal sequence
-    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.arm.set_single_joint_position("gripper", math.pi/4.0)
     locobot.gripper.open()
     locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
     locobot.gripper.close()
