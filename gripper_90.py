@@ -1,40 +1,43 @@
-from interbotix_xs_modules.locobot import InterbotixLocobotXS
+import math
 import numpy as np
+from interbotix_xs_modules.locobot import InterbotixLocobotXS
 
 def main():
-    # Create a 4x4 identity matrix as the starting transformation.
-    T_sd = np.identity(4)
+    locobot = InterbotixLocobotXS(robot_model="locobot_wx250s", arm_model="mobile_wx250s")
 
-    # Set the desired translation (position) of the end-effector.
-    T_sd[0, 3] = 0.3  # x position
-    T_sd[1, 3] = 0    # y position
-    T_sd[2, 3] = 0.2  # z position
+    # Move to initial pose
+    locobot.arm.set_ee_pose_components(x=0.3, z=0.2)
 
-    # Define a 90 degree rotation (in radians) about the z-axis.
-    theta = np.pi / 2  # 90 degrees in radians
+    # --- Gripper Rotation: 90 degrees about Z (Yaw) ---
+    T = np.identity(4)
+    T[0, 3] = 0.3  # x
+    T[2, 3] = 0.2  # z
 
-    # Construct the rotation matrix for a 90° rotation about the z-axis.
+    # 90 degree yaw rotation
+    yaw = np.pi / 2
     Rz = np.array([
-        [np.cos(theta), -np.sin(theta), 0],
-        [np.sin(theta),  np.cos(theta), 0],
+        [math.cos(yaw), -math.sin(yaw), 0],
+        [math.sin(yaw),  math.cos(yaw), 0],
         [0,              0,             1]
     ])
+    T[:3, :3] = Rz
+    locobot.arm.set_ee_pose_matrix(T)
 
-    # Replace the upper-left 3x3 rotation component of T_sd with Rz.
-    T_sd[:3, :3] = Rz
-
-    # Create the manipulator instance.
-    bot = InterbotixLocobotXS(
-      robot_model="locobot_wx250s", 
-      arm_model="mobile_wx250s",
-      use_move_base_action=True
-    )
-
-    # Home the arm, set the new pose, then return the arm to home and sleep poses.
-    bot.arm.go_to_home_pose()
-    bot.arm.set_ee_pose_matrix(T_sd)
-    bot.arm.go_to_home_pose()
-    bot.arm.go_to_sleep_pose()
+    # Continue normal sequence
+    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.gripper.open()
+    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.gripper.close()
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
+    locobot.arm.set_single_joint_position("waist", -math.pi/4.0)
+    locobot.arm.set_ee_cartesian_trajectory(pitch=1.5)
+    locobot.arm.set_ee_cartesian_trajectory(pitch=-1.5)
+    locobot.arm.set_single_joint_position("waist", math.pi/4.0)
+    locobot.arm.set_ee_cartesian_trajectory(x=0.1, z=-0.25)
+    locobot.gripper.open()
+    locobot.arm.set_ee_cartesian_trajectory(x=-0.1, z=0.25)
+    locobot.arm.go_to_home_pose()
+    locobot.arm.go_to_sleep_pose()
 
 if __name__ == '__main__':
     main()
