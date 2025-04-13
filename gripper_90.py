@@ -14,7 +14,7 @@ def main():
     T[2, 3] = 0.2  # z
 
     # 90 degree yaw rotation
-    yaw = np.pi / 2
+    yaw = - np.pi / 2
     Rz = np.array([
         [math.cos(yaw), -math.sin(yaw), 0],
         [math.sin(yaw),  math.cos(yaw), 0],
