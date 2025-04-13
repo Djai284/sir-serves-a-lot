@@ -10,8 +10,8 @@ def main():
 
     # --- Gripper Rotation: 90 degrees about Z (Yaw) ---
     T = np.identity(4)
-    T[0, 3] = 0  # x
-    T[2, 3] = 0  # z
+    T[0, 3] = 0.3  # x
+    T[2, 3] = 0.2  # z
 
     # 90 degree yaw rotation
     yaw = - np.pi / 2
